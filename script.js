@@ -8,28 +8,27 @@ formMeal.addEventListener('submit', (evento) => {
     evento.preventDefault();
     const meal = {
         descricao: inputMeal.value,
-        quantidade: inputQnt.value
+        quantidade: parseInt(inputQnt.value) // Converter para número
     };
 
-    
+    // Verifica se o item já existe
+    const index = refeicaoAdd.findIndex(elemento =>
+        elemento.descricao === meal.descricao
+    );
 
-    const checarDuplicado = refeicaoAdd.some((elemento)=>
-    elemento.descricao===meal.descricao)
-    if (checarDuplicado){
-        alert ('item ja existe')
-    } else{
+    if (index > -1) {
+        // Se o item já existe, atualiza a quantidade somando
+        refeicaoAdd[index].quantidade = parseInt(refeicaoAdd[index].quantidade) + meal.quantidade;
+    } else {
+        // Se o item não existe, adiciona-o à lista
         refeicaoAdd.push(meal);
     }
-
 
     salvarMeal();
     inputMeal.value = '';
     inputQnt.value = '';
 
-
-
-
-    mostrarNaTela(); // Atualizar a lista após adicionar uma nova refeição
+    mostrarNaTela(); // Atualizar a lista após adicionar ou atualizar uma refeição
     console.log(refeicaoAdd);
 });
 
