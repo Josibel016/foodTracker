@@ -51,7 +51,6 @@ select {
 
 button {
     display: block;
-    width: 100%;
     padding: 10px;
     background-color: #28a745;
     color: #0F725C;
@@ -87,19 +86,20 @@ button:hover {
 .task-list-item-description {
     flex-grow: 1;
     margin: 0;
-    font-size: 2.25 rem;
+    font-size: 2.25rem; /* Adjusted to correct format */
     font-style: normal;
     font-weight: 600;
     line-height: 150%;
     color: var(--azul-profundo, #000); /* Provide a fallback color */
     font-family: Montserrat, sans-serif; /* Add fallback font */
 }
-.app_button-edit{
-   
+
+.app_button-edit {
+    background-color: transparent;
     border: none;
     cursor: pointer;
-    outline: inherit;
-    background-color: transparent;
+    outline: none;
     display: flex;
-    align-items: end;
+    align-items: center;
+    color: #0ff340;
 }

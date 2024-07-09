@@ -2,17 +2,34 @@ const formMeal = document.getElementById('mealForm');
 const inputMeal = document.getElementById('mealName');
 const refeicaoAdd = JSON.parse(localStorage.getItem('meal') || '[]');
 const mealList = document.getElementById('mealList');
+const inputQnt = document.getElementById('quantity');
 
 formMeal.addEventListener('submit', (evento) => {
     evento.preventDefault();
     const meal = {
-        descricao: inputMeal.value
+        descricao: inputMeal.value,
+        quantidade: inputQnt.value
     };
 
-    refeicaoAdd.push(meal);
+    
+
+    const checarDuplicado = refeicaoAdd.some((elemento)=>
+    elemento.descricao===meal.descricao)
+    if (checarDuplicado){
+        alert ('item ja existe')
+    } else{
+        refeicaoAdd.push(meal);
+    }
+
+
     salvarMeal();
     inputMeal.value = '';
-    mostrarNaTela(); // Refresh the list after adding a new meal
+    inputQnt.value = '';
+
+
+
+
+    mostrarNaTela(); // Atualizar a lista após adicionar uma nova refeição
     console.log(refeicaoAdd);
 });
 
@@ -21,10 +38,10 @@ function salvarMeal() {
 }
 
 function mostrarNaTela() {
-    mealList.innerHTML = ''; // Clear the list before displaying
+    mealList.innerHTML = ''; // Limpar a lista antes de exibir
     refeicaoAdd.forEach(meal => {
-        const li = criarElemento(meal); // Pass the entire 'meal' object
-        mealList.appendChild(li); // Append each created 'li' element to 'mealList'
+        const li = criarElemento(meal); // Passar o objeto 'meal' completo
+        mealList.appendChild(li); // Adicionar cada elemento 'li' criado à 'mealList'
     });
 }
 
@@ -32,9 +49,13 @@ function criarElemento(meal) {
     const li = document.createElement('li');
     li.classList.add('li-list-item');
 
-    const paragrafo = document.createElement('p');
-    paragrafo.textContent = meal.descricao;
-    paragrafo.classList.add('task-list-item-description');
+    const paragrafoDescricao = document.createElement('p');
+    paragrafoDescricao.textContent = meal.descricao;
+    paragrafoDescricao.classList.add('task-list-item-description');
+
+    const paragrafoQuantidade = document.createElement('p');
+    paragrafoQuantidade.textContent = meal.quantidade;
+    paragrafoQuantidade.classList.add('task-list-item-description');
 
     const svg = document.createElement('svg');
     svg.innerHTML = `
@@ -55,14 +76,15 @@ function criarElemento(meal) {
         if (index > -1) {
             refeicaoAdd.splice(index, 1);
             salvarMeal();
-            li.remove(); // Remove the 'li' element from the DOM
-            mostrarNaTela(); // Refresh the list after deletion
+            li.remove(); // Remover o elemento 'li' do DOM
+            mostrarNaTela(); // Atualizar a lista após a exclusão
         }
     });
 
     li.append(svg);
-    li.append(paragrafo);
-    li.append(btnDelete);
+    li.append(paragrafoQuantidade); // Adicionar quantidade primeiro
+    li.append(paragrafoDescricao); // Adicionar descrição depois
+    li.append(btnDelete); // Botão de deletar ao final
 
     return li;
 }
