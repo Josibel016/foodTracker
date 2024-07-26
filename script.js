@@ -8,7 +8,8 @@ formMeal.addEventListener('submit', (evento) => {
     evento.preventDefault();
     const meal = {
         descricao: inputMeal.value,
-        quantidade: parseInt(inputQnt.value) // Converter para número
+        quantidade: parseInt(inputQnt.value), // Converter para número
+        data: getcurrentDate() 
     };
 
     // Verifica se o item já existe
@@ -31,6 +32,12 @@ formMeal.addEventListener('submit', (evento) => {
     mostrarNaTela(); // Atualizar a lista após adicionar ou atualizar uma refeição
     console.log(refeicaoAdd);
 });
+
+function getcurrentDate(){
+    return new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD // estudar
+}
+
+
 
 function salvarMeal() {
     localStorage.setItem('meal', JSON.stringify(refeicaoAdd));
@@ -55,6 +62,10 @@ function criarElemento(meal) {
     const paragrafoQuantidade = document.createElement('p');
     paragrafoQuantidade.textContent = meal.quantidade;
     paragrafoQuantidade.classList.add('task-list-item-description');
+
+    const paragrafoData = document.createElement('p')
+    paragrafoData.textContent= meal.data;
+    paragrafoData.classList.add('task-list-item-description')
 
     const svg = document.createElement('svg');
     svg.innerHTML = `
@@ -83,6 +94,7 @@ function criarElemento(meal) {
     li.append(svg);
     li.append(paragrafoQuantidade); // Adicionar quantidade primeiro
     li.append(paragrafoDescricao); // Adicionar descrição depois
+    li.append(paragrafoData);
     li.append(btnDelete); // Botão de deletar ao final
 
     return li;
